@@ -34,8 +34,20 @@ const getSingleProduct = catchAsync(async (req, res) => {
   });
 });
 
+const deleteSingleProduct = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const result = await ProductServices.deleteProductFromDB(id);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Product deleted successfully',
+    data: result,
+  });
+});
+
 export const ProductControllers = {
   createProduct,
   getAllProduct,
   getSingleProduct,
+  deleteSingleProduct,
 };
