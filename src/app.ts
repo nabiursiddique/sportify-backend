@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import router from './routes';
 import notFoundRoute from './middlewares/notFoundRoute';
+import globalErrorHandler from './middlewares/globalErrorHandler';
 
 export const app = express();
 
@@ -17,3 +18,6 @@ app.get('/', (req, res) => {
 
 // not found route
 app.use(notFoundRoute);
+
+// error handling for whole project
+app.use(globalErrorHandler);
