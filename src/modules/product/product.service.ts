@@ -12,17 +12,27 @@ const createProductIntoDB = async (payload: TProduct) => {
 // get all products
 const getAllProductsFromDB = async () => {
   const result = await Product.find();
+  if (!result || result.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product db is empty');
+  }
   return result;
 };
 
 // get single product
 const getSingleProductFromDB = async (id: string) => {
   const result = await Product.findById(id);
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
   return result;
 };
 
 // delete product from db
 const deleteProductFromDB = async (id: string) => {
+  const product = await Product.findById(id);
+  if (!product) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
   const result = await Product.findByIdAndDelete(id);
   return result;
 };
