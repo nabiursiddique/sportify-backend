@@ -1,6 +1,6 @@
-import express from "express";
+import express from 'express';
 export const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Sportify Server is running");
+app.get('/', (req, res) => {
+  res.send('Sportify Server is running');
 });
