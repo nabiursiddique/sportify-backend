@@ -57,10 +57,25 @@ const updateProduct = catchAsync(async (req, res) => {
   });
 });
 
+const updateStockQuantity = catchAsync(async (req, res) => {
+  const { productIds, stockQuantity } = req.body;
+  const result = await ProductServices.updateStockQuantityIntoDB(
+    productIds,
+    stockQuantity,
+  );
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Stock quantities updated successfully',
+    data: result,
+  });
+});
+
 export const ProductControllers = {
   createProduct,
   getAllProduct,
   getSingleProduct,
   deleteSingleProduct,
   updateProduct,
+  updateStockQuantity,
 };

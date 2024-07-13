@@ -8,5 +8,7 @@ router.get('/', ProductControllers.getAllProduct);
 router.get('/:id', ProductControllers.getSingleProduct);
 router.delete('/:id', ProductControllers.deleteSingleProduct);
 router.patch('/:id', ProductControllers.updateProduct);
+// for updating product stock quantities
+router.post('/updateStockQuantity', ProductControllers.updateStockQuantity);
 
 export const ProductRoutes = router;

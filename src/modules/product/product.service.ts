@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from 'http-status';
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
@@ -56,10 +57,45 @@ const updateProductIntoDB = async (id: string, updateData: object) => {
   return result;
 };
 
+const updateStockQuantityIntoDB = async (
+  productIds: any,
+  stockQuantity: any,
+) => {
+  const updatePromises = productIds.map(async (id: string, ind: number) => {
+    const quantityToUpdate = stockQuantity[ind];
+    try {
+      // Retrieve current stock quantity
+      const product = await Product.findById(id);
+      if (!product) {
+        throw new AppError(
+          httpStatus.NOT_FOUND,
+          `Product with id ${id} not found`,
+        );
+      }
+      const currentQuantity = product.stockQuantity;
+      const newQuantity = currentQuantity - quantityToUpdate;
+
+      // Update stock quantity
+      const updatedProduct = await Product.findByIdAndUpdate(
+        id,
+        { stockQuantity: newQuantity },
+        { new: true },
+      );
+
+      return updatedProduct;
+    } catch (error) {
+      throw new AppError(httpStatus.NOT_MODIFIED, 'cannot modify');
+    }
+  });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const updatedProducts = await Promise.all(updatePromises);
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   deleteProductFromDB,
   updateProductIntoDB,
+  updateStockQuantityIntoDB,
 };
