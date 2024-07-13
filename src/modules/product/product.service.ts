@@ -11,8 +11,17 @@ const createProductIntoDB = async (payload: TProduct) => {
 };
 
 // get all products
-const getAllProductsFromDB = async () => {
-  const result = await Product.find();
+const getAllProductsFromDB = async (req: any) => {
+  // getting product based on category
+  const category = req.query.category as string;
+
+  // eslint-disable-next-line prefer-const
+  let query: any = {};
+  if (category) {
+    query.category = category;
+  }
+
+  const result = await Product.find(query);
   if (!result || result.length === 0) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product db is empty');
   }
